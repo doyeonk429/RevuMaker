@@ -8,18 +8,48 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var showImagePicker = false
+    @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
+    @State private var selectedImage: UIImage?
+    
+    @State private var navigateToScanImageView = false
+    
     var body: some View {
-        VStack {
-            Spacer()
-            HomeTitleView()
-            Spacer()
-            HomeImageView()
-            Spacer()
-            HomeButtonsView()
-            HomeStartWithoutPhotoButton()
-            Spacer()
+        NavigationStack {
+            VStack {
+                Spacer()
+                HomeTitleView()
+                Spacer()
+                HomeImageView()
+                Spacer()
+                HomeButtonsView(openGallery: openGallery, openCamera: openCamera)
+                HomeStartWithoutPhotoButton()
+                Spacer()
+            }
+            .padding()
+            .navigationDestination(isPresented: $navigateToScanImageView) {
+                if let selectedImage {
+                    ScanImageView(image: selectedImage)
+                }
+            }
+            .sheet(isPresented: $showImagePicker) {
+                ImagePickerView(sourceType: imagePickerSourceType) { image in
+                    self.selectedImage = image
+                    self.showImagePicker = false
+                    self.navigateToScanImageView = true
+                }
+            }
         }
-        .padding()
+    }
+    
+    private func openGallery() {
+        imagePickerSourceType = .photoLibrary
+        showImagePicker = true
+    }
+
+    private func openCamera() {
+        imagePickerSourceType = .camera
+        showImagePicker = true
     }
 }
 
@@ -48,15 +78,14 @@ struct HomeImageView: View {
 }
 
 struct HomeButtonsView: View {
+    let openGallery: () -> Void
+    let openCamera: () -> Void
+
     var body: some View {
         HStack {
             Spacer()
-            HomeActionButton(title: "갤러리") {
-                // gallery action
-            }
-            HomeActionButton(title: "카메라") {
-                // camera action
-            }
+            HomeActionButton(title: "갤러리", action: openGallery)
+            HomeActionButton(title: "카메라", action: openCamera)
             Spacer()
         }
     }
