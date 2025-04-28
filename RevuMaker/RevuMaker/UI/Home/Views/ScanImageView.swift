@@ -16,6 +16,9 @@ struct ScanImageView: View {
     var body: some View {
         VStack {
             ScanningImageView(image: image, scanOffset: $scanOffset)
+            Spacer()
+            Text("스캔 중입니다")
+                .padding(.all, 20)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -41,7 +44,7 @@ private struct ScanningImageView: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 300, height: 300)
+                    .frame(width: geo.size.width*0.8, height: geo.size.height*0.8)
 
                 Rectangle()
                     .fill(
