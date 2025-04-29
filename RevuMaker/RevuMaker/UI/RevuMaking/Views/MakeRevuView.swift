@@ -46,6 +46,7 @@ struct MakeRevuView: View {
             .buttonStyle(OrangeRoundedButtonStyle(width: 180, height: 40, backgroundColor: .green))
             .padding(8)
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     private func copyToClipboard(text: String) {
