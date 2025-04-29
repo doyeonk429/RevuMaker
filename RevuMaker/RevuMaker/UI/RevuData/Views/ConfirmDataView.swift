@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct ConfirmDataView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State private var navigateToSelectRevu = false
+    @EnvironmentObject private var coordinator: NavigationCoordinator
     let storeData: StoreModel
     let mode: ConfirmMode
     
@@ -49,20 +48,14 @@ struct ConfirmDataView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 BackButtonView(action: {
-                    dismiss()
+                    coordinator.pop()
                 })
             }
         }
         .onAppear {
-            print("데이터 가져옴")
             storeName = storeData.storeName
             category = storeData.category
             productNames = storeData.productNames
-        }
-        .navigationDestination(isPresented: $navigateToSelectRevu) {
-            SelectRevuView(options: [
-                "햄버거", "피자", "초콜릿", "콜라", "아메리카노", "수박주스", "맥주", "치킨", "삼겹살", "김치찌개"
-            ])
         }
     }
     
@@ -96,7 +89,7 @@ struct ConfirmDataView: View {
     private var leftButtonAction: () -> Void {
         switch mode {
         case .fromScan:
-            return { dismiss() }
+            return { coordinator.resetToRoot() }
         case .fromEmpty:
             return {
                 productNames.append("")
@@ -106,7 +99,12 @@ struct ConfirmDataView: View {
     
     private var rightButtonAction: () -> Void {
         {
-            navigateToSelectRevu = true
+            coordinator.push(
+                Route.selectRevu([
+                    "햄버거", "피자", "초콜릿", "콜라", "아메리카노",
+                    "수박주스", "맥주", "치킨", "삼겹살", "김치찌개"
+                ])
+            )
         }
     }
 }
