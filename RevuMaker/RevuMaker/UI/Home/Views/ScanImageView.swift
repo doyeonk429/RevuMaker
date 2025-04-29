@@ -12,6 +12,8 @@ struct ScanImageView: View {
     let image: UIImage
 
     @State private var scanOffset: CGFloat = -150
+    @State private var isNavigate: Bool = false
+    @State private var storeData: StoreModel?
 
     var body: some View {
         VStack {
@@ -29,6 +31,21 @@ struct ScanImageView: View {
                     Image(systemName: "xmark")
                         .foregroundStyle(.black)
                 }
+            }
+        }
+        .navigationDestination(isPresented: $isNavigate) {
+            if let storeData {
+                ConfirmDataView(storeData: storeData, mode: .fromScan)
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                storeData = StoreModel(
+                    storeName: "맥도날드 홍대점",
+                    category: "음식점",
+                    productNames: ["빅맥", "더블치즈버거", "감자튀김", "콜라"]
+                )
+                isNavigate = true
             }
         }
     }
