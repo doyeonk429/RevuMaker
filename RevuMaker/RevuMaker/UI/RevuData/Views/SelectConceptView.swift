@@ -64,7 +64,7 @@ struct SelectConceptView: View {
             }
         }
         .navigationDestination(isPresented: $navigateToMakeRevu) {
-            // 다음 화면 호출
+            MakeRevuView()
         }
         .sheet(isPresented: $showingInfoSheet) {
             VStack(spacing: 16) {
