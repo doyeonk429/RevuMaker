@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct ScanImageView: View {
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var coordinator: NavigationCoordinator
     let image: UIImage
 
     @State private var scanOffset: CGFloat = -150
-    @State private var isNavigate: Bool = false
     @State private var storeData: StoreModel?
 
     var body: some View {
@@ -26,26 +25,26 @@ struct ScanImageView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
-                    dismiss()
+                    coordinator.pop()
                 }) {
                     Image(systemName: "xmark")
                         .foregroundStyle(.black)
                 }
             }
         }
-        .navigationDestination(isPresented: $isNavigate) {
-            if let storeData {
-                ConfirmDataView(storeData: storeData, mode: .fromScan)
-            }
-        }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                storeData = StoreModel(
+                let generatedStoreData = StoreModel(
                     storeName: "맥도날드 홍대점",
                     category: "음식점",
                     productNames: ["빅맥", "더블치즈버거", "감자튀김", "콜라"]
                 )
-                isNavigate = true
+                coordinator.push(
+                    Route.confirmData(
+                        generatedStoreData,
+                        ConfirmMode.fromScan
+                    )
+                )
             }
         }
     }
@@ -95,4 +94,5 @@ private struct ScanningImageView: View {
 
 #Preview {
     ScanImageView(image: UIImage(systemName: "globe")!)
+        .environmentObject(NavigationCoordinator()) // 프리뷰에서 coordinator 필요
 }
