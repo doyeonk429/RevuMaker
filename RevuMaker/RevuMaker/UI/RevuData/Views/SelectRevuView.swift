@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct SelectRevuView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State private var navigateToSelectConcept = false
+    @EnvironmentObject private var coordinator: NavigationCoordinator
     let options: [String]
     @State private var selectedItems: Set<String> = []
     
     private let buttonTitle : String = "다음"
     private var buttonAction: () -> Void {
         {
-            navigateToSelectConcept = true
+            coordinator.push(Route.selectConcept)
         }
     }
 
@@ -69,12 +68,9 @@ struct SelectRevuView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 BackButtonView(action: {
-                    dismiss()
+                    coordinator.pop()
                 })
             }
-        }
-        .navigationDestination(isPresented: $navigateToSelectConcept) {
-            SelectConceptView()
         }
     }
 

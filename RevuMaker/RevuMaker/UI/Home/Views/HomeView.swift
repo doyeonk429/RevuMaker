@@ -12,31 +12,26 @@ struct HomeView: View {
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var selectedImage: UIImage?
     
-    @State private var navigateToScanImageView = false
+    @EnvironmentObject var coordinator: NavigationCoordinator
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                Spacer()
-                HomeTitleView()
-                Spacer()
-                HomeImageView()
-                Spacer()
-                HomeButtonsView(openGallery: openGallery, openCamera: openCamera)
-                HomeStartWithoutPhotoButton()
-                Spacer()
-            }
-            .padding()
-            .navigationDestination(isPresented: $navigateToScanImageView) {
-                if let selectedImage {
-                    ScanImageView(image: selectedImage)
-                }
-            }
-            .sheet(isPresented: $showImagePicker) {
-                ImagePickerView(sourceType: imagePickerSourceType) { image in
-                    self.selectedImage = image
-                    self.showImagePicker = false
-                    self.navigateToScanImageView = true
+        VStack {
+            Spacer()
+            HomeTitleView()
+            Spacer()
+            HomeImageView()
+            Spacer()
+            HomeButtonsView(openGallery: openGallery, openCamera: openCamera)
+            HomeStartWithoutPhotoButton()
+            Spacer()
+        }
+        .padding()
+        .sheet(isPresented: $showImagePicker) {
+            ImagePickerView(sourceType: imagePickerSourceType) { image in
+                self.selectedImage = image
+                self.showImagePicker = false
+                if let image = selectedImage {
+                    coordinator.push(Route.scanImage(image))
                 }
             }
         }
@@ -46,7 +41,7 @@ struct HomeView: View {
         imagePickerSourceType = .photoLibrary
         showImagePicker = true
     }
-
+    
     private func openCamera() {
         imagePickerSourceType = .camera
         showImagePicker = true
@@ -80,7 +75,7 @@ struct HomeImageView: View {
 struct HomeButtonsView: View {
     let openGallery: () -> Void
     let openCamera: () -> Void
-
+    
     var body: some View {
         HStack {
             Spacer()
@@ -94,7 +89,7 @@ struct HomeButtonsView: View {
 struct HomeActionButton: View {
     let title: String
     let action: () -> Void
-
+    
     var body: some View {
         Button(action: action) {
             Text(title)
@@ -111,22 +106,21 @@ struct HomeActionButton: View {
 }
 
 struct HomeStartWithoutPhotoButton: View {
-    @State private var navigateToEmptyConfirm = false
-
+    @EnvironmentObject var coordinator: NavigationCoordinator
+    
     var body: some View {
         Button {
-            navigateToEmptyConfirm = true
+            coordinator.push(
+                Route.confirmData(
+                    StoreModel(storeName: "", category: "", productNames: []),
+                    ConfirmMode.fromEmpty
+                )
+            )
         } label: {
             Text("영수증 사진 없이 시작하기")
                 .font(.system(size: 14, weight: .regular))
                 .foregroundStyle(.gray)
                 .underline()
-        }
-        .navigationDestination(isPresented: $navigateToEmptyConfirm) {
-            ConfirmDataView(
-                storeData: StoreModel(storeName: "", category: "", productNames: []),
-                mode: .fromEmpty
-            )
         }
     }
 }

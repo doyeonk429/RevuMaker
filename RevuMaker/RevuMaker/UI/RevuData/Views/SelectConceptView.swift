@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct SelectConceptView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State private var navigateToMakeRevu = false
+    @EnvironmentObject private var coordinator: NavigationCoordinator
     
     let options: [String] = ["친근한 말투", "귀여운 말투", "믿음직한 말투", "아저씨 말투", "트위터 말투(140자 제한)", "블로그 말투"]
     @State private var selectedItem: String?
@@ -19,8 +18,9 @@ struct SelectConceptView: View {
     
     private var buttonAction: () -> Void {
         {
-            navigateToMakeRevu = true
-            print("버튼 눌림")
+            if let item = selectedItem {
+                coordinator.push(Route.makeRevu(item))
+            }
         }
     }
     
@@ -59,12 +59,9 @@ struct SelectConceptView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 BackButtonView(action: {
-                    dismiss()
+                    coordinator.pop()
                 })
             }
-        }
-        .navigationDestination(isPresented: $navigateToMakeRevu) {
-            MakeRevuView()
         }
         .sheet(isPresented: $showingInfoSheet) {
             VStack(spacing: 16) {
