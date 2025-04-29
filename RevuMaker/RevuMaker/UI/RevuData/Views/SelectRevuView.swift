@@ -29,6 +29,7 @@ struct SelectRevuView: View {
                 .font(.system(size: 14, weight: .regular))
                 .padding(.leading, 24)
                 .foregroundStyle(.gray)
+            
             VStack(alignment: .center) {
                 List {
                     ForEach(options, id: \.self) { item in
@@ -73,7 +74,7 @@ struct SelectRevuView: View {
             }
         }
         .navigationDestination(isPresented: $navigateToSelectConcept) {
-            // 다음 화면 호출
+            SelectConceptView()
         }
     }
 
@@ -85,9 +86,9 @@ struct SelectRevuView: View {
         }
     }
 }
-
-#Preview {
-    SelectRevuView(options: [
-        "햄버거", "피자", "초콜릿", "콜라", "아메리카노", "수박주스", "맥주", "치킨", "삼겹살", "김치찌개"
-    ])
-}
+//
+//#Preview {
+//    SelectRevuView(options: [
+//        "햄버거", "피자", "초콜릿", "콜라", "아메리카노", "수박주스", "맥주", "치킨", "삼겹살", "김치찌개"
+//    ])
+//}

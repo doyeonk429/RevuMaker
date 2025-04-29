@@ -10,6 +10,8 @@ import SwiftUI
 struct OrangeRoundedButtonStyle: ButtonStyle {
     var width: CGFloat
     var height: CGFloat
+    var backgroundColor = Color.orange
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 18, weight: .semibold))
@@ -18,7 +20,7 @@ struct OrangeRoundedButtonStyle: ButtonStyle {
             .frame(width: width, height: height)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.orange)
+                    .fill(backgroundColor)
             )
             .opacity(configuration.isPressed ? 0.7 : 1.0)
     }
