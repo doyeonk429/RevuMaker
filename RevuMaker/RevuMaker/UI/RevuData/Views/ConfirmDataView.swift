@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ConfirmDataView: View {
     @Environment(\.dismiss) private var dismiss
+    @State private var navigateToSelectRevu = false
     let storeData: StoreModel
     let mode: ConfirmMode
     
@@ -58,6 +59,11 @@ struct ConfirmDataView: View {
             category = storeData.category
             productNames = storeData.productNames
         }
+        .navigationDestination(isPresented: $navigateToSelectRevu) {
+            SelectRevuView(options: [
+                "햄버거", "피자", "초콜릿", "콜라", "아메리카노", "수박주스", "맥주", "치킨", "삼겹살", "김치찌개"
+            ])
+        }
     }
     
     private var titleText: String {
@@ -99,17 +105,8 @@ struct ConfirmDataView: View {
     }
     
     private var rightButtonAction: () -> Void {
-        switch mode {
-        case .fromScan:
-            return {
-                print("확인된 데이터:", storeName, category, productNames)
-                // 예: 리뷰 작성 화면 이동
-            }
-        case .fromEmpty:
-            return {
-                print("최종 입력 완료:", storeName, category, productNames)
-                // 예: 리뷰 작성 화면 이동
-            }
+        {
+            navigateToSelectRevu = true
         }
     }
 }
