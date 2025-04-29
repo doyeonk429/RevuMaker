@@ -36,7 +36,7 @@ struct ConfirmDataView: View {
                 }
                 .padding(.top, 24)
             }
-            .frame(height: UIScreen.main.bounds.height * 0.7)
+            .frame(height: UIScreen.main.bounds.height * 0.65)
             
             HStack(spacing: 16) {
                 HomeActionButton(title: leftButtonTitle, action: leftButtonAction)
@@ -45,6 +45,13 @@ struct ConfirmDataView: View {
             .padding(.bottom, 24)
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                BackButtonView(action: {
+                    dismiss()
+                })
+            }
+        }
         .onAppear {
             print("데이터 가져옴")
             storeName = storeData.storeName
