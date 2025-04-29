@@ -111,14 +111,22 @@ struct HomeActionButton: View {
 }
 
 struct HomeStartWithoutPhotoButton: View {
+    @State private var navigateToEmptyConfirm = false
+
     var body: some View {
         Button {
-            // start without photo action
+            navigateToEmptyConfirm = true
         } label: {
             Text("영수증 사진 없이 시작하기")
                 .font(.system(size: 14, weight: .regular))
                 .foregroundStyle(.gray)
                 .underline()
+        }
+        .navigationDestination(isPresented: $navigateToEmptyConfirm) {
+            ConfirmDataView(
+                storeData: StoreModel(storeName: "", category: "", productNames: []),
+                mode: .fromEmpty
+            )
         }
     }
 }

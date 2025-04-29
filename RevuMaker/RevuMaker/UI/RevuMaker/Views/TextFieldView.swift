@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TextFieldView: View {
     let title: String
-    @State var content: String
+    @Binding var content: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -32,9 +32,4 @@ struct TextFieldView: View {
                 )
         }
     }
-}
-
-#Preview {
-//    TextFieldView(title: "가게명", content: "초코찰떡파이")
-    TextFieldView(title: "가게명", content: "")
 }
