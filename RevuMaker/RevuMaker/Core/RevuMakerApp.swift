@@ -15,24 +15,24 @@ struct RevuMakerApp: App {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
                 HomeView()
-                    .environmentObject(coordinator) // ✅ 반드시 주입
+                    .environmentObject(coordinator)
                     .navigationDestination(for: Route.self) { route in
                         switch route {
                         case .scanImage(let image):
                             ScanImageView(image: image)
-                                .environmentObject(coordinator) // ✅ 여기서도 주입
+                                .environmentObject(coordinator)
                         case .confirmData(let storeData, let mode):
                             ConfirmDataView(storeData: storeData, mode: mode)
-                                .environmentObject(coordinator) // ✅
+                                .environmentObject(coordinator)
                         case .selectRevu(let options):
                             SelectRevuView(options: options)
-                                .environmentObject(coordinator) // ✅
+                                .environmentObject(coordinator)
                         case .selectConcept:
                             SelectConceptView()
-                                .environmentObject(coordinator) // ✅
-                        case .makeRevu(let option):
+                                .environmentObject(coordinator)
+                        case .makeRevu(_):
                             MakeRevuView()
-                                .environmentObject(coordinator) // ✅
+                                .environmentObject(coordinator)
                         }
                     }
             }
