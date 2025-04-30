@@ -28,7 +28,7 @@ final class NavigationCoordinator: ObservableObject {
 enum Route: Hashable {
     case scanImage(UIImage)
     case confirmData(StoreModel, ConfirmMode)
-    case selectRevu([String])
+    case selectRevu
     case selectConcept
-    case makeRevu(String)
+    case makeRevu(ReviewTone)
 }

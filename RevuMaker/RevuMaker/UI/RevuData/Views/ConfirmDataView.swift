@@ -14,7 +14,8 @@ struct ConfirmDataView: View {
     
     @State private var storeName: String = ""
     @State private var category: String = ""
-    @State private var productNames: [String] = []
+    @State private var date: String = ""
+    @State private var productNames: [Product] = []
     
     var body: some View {
         VStack {
@@ -29,9 +30,24 @@ struct ConfirmDataView: View {
                 VStack(alignment: .leading, spacing: 36) {
                     TextFieldView(title: "가게명", content: $storeName)
                     TextFieldView(title: "업종", content: $category)
+                    TextFieldView(title: "방문 날짜", content: $date)
                     
                     ForEach(productNames.indices, id: \.self) { index in
-                        TextFieldView(title: "품명", content: $productNames[index])
+                        VStack(spacing: 36) {
+                            TextFieldView(title: "\(index+1). 품명", content: $productNames[index].name)
+                            TextFieldView(title: "\(index+1). 수량", content: Binding(get: {
+                                String(productNames[index].count)
+                            }, set: { newValue in
+                                productNames[index].count = Int(newValue) ?? 0
+                                updateTotalPrice(at: index)
+                            }))
+                            TextFieldView(title: "\(index+1). 가격", content: Binding(get: {
+                                String(productNames[index].price)
+                            }, set: { newValue in
+                                productNames[index].price = Int(newValue) ?? 0
+                                updateTotalPrice(at: index)
+                            }))
+                        }
                     }
                 }
                 .padding(.top, 24)
@@ -55,8 +71,14 @@ struct ConfirmDataView: View {
         .onAppear {
             storeName = storeData.storeName
             category = storeData.category
+            date = storeData.date
             productNames = storeData.productNames
         }
+    }
+    
+    private func updateTotalPrice(at index: Int) {
+        let product = productNames[index]
+        productNames[index].totalPrice = product.count * product.price
     }
     
     private var titleText: String {
@@ -92,19 +114,22 @@ struct ConfirmDataView: View {
             return { coordinator.resetToRoot() }
         case .fromEmpty:
             return {
-                productNames.append("")
+                productNames.append(Product(name: "", price: 0, count: 0, totalPrice: 0))
             }
         }
     }
     
     private var rightButtonAction: () -> Void {
         {
-            coordinator.push(
-                Route.selectRevu([
-                    "햄버거", "피자", "초콜릿", "콜라", "아메리카노",
-                    "수박주스", "맥주", "치킨", "삼겹살", "김치찌개"
-                ])
+            let totalPrice = productNames.reduce(0) { $0 + $1.totalPrice }
+            let updatedStoreData = StoreModel(
+                storeName: storeName,
+                date: date,
+                category: category,
+                storeTotalPrice: totalPrice,
+                productNames: productNames
             )
+            coordinator.push(Route.selectRevu)
         }
     }
 }

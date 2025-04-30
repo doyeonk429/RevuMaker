@@ -36,9 +36,13 @@ struct ScanImageView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 let generatedStoreData = StoreModel(
                     storeName: "맥도날드 홍대점",
+                    date: "2024년 05월 05일",
                     category: "음식점",
-                    productNames: ["빅맥", "더블치즈버거", "감자튀김", "콜라"]
-                )
+                    storeTotalPrice: 12000,
+                    productNames: [
+                        Product(name: "치즈버거", price: 5000, count: 1, totalPrice: 5000),
+                        Product(name: "불고기버거", price: 5000, count: 1, totalPrice: 5000),
+                    ])
                 coordinator.push(
                     Route.confirmData(
                         generatedStoreData,
