@@ -20,6 +20,13 @@ final class OpenAIService {
         client = OpenAI(configuration: .init(token: key))
     }
     
+    /// Analyzes a receipt image using the OpenAI API and extracts structured receipt information in JSON format.
+        ///
+        /// Converts the provided image to a compressed JPEG, encodes it as a base64 data URL, and sends it to the GPT model with a prompt requesting only a specific JSON structure describing the receipt details (store name, date, category, total price, and product list).
+        ///
+        /// - Parameter image: The receipt image to analyze.
+        /// - Returns: A JSON string containing the extracted receipt information, or "결과 없음" if no result is returned.
+        /// - Throws: An error if the image cannot be encoded or if the OpenAI API request fails.
     func analyzeReceiptImage(_ image: UIImage) async throws -> String {
         guard let imageData = image.jpegData(compressionQuality: 0.6) else {
             throw NSError(domain: "ImageEncoding", code: -1, userInfo: nil)

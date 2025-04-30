@@ -73,6 +73,9 @@ struct SelectRevuView: View {
         }
     }
 
+    /// Toggles the selection state of a given prompt item.
+    ///
+    /// If the item is already selected, it is removed from the selection; otherwise, it is added.
     private func toggleSelection(for item: PromptData) {
         if selectedItems.contains(item) {
             selectedItems.remove(item)

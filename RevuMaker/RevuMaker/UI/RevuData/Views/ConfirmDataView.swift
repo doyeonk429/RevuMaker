@@ -76,6 +76,9 @@ struct ConfirmDataView: View {
         }
     }
     
+    /// Updates the total price of the product at the specified index by multiplying its count and price.
+    ///
+    /// - Parameter index: The index of the product in the productNames array to update.
     private func updateTotalPrice(at index: Int) {
         let product = productNames[index]
         productNames[index].totalPrice = product.count * product.price
