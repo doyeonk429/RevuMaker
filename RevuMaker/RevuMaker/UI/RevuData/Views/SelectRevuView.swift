@@ -9,8 +9,7 @@ import SwiftUI
 
 struct SelectRevuView: View {
     @EnvironmentObject private var coordinator: NavigationCoordinator
-    let options: [String]
-    @State private var selectedItems: Set<String> = []
+    @State private var selectedItems: Set<PromptData> = []
     
     private let buttonTitle : String = "다음"
     private var buttonAction: () -> Void {
@@ -31,12 +30,12 @@ struct SelectRevuView: View {
             
             VStack(alignment: .center) {
                 List {
-                    ForEach(options, id: \.self) { item in
+                    ForEach(PromptData.allCases, id: \.self) { item in
                         Button(action: {
                             toggleSelection(for: item)
                         }) {
                             HStack {
-                                Text(item)
+                                Text(item.desc)
                                     .foregroundColor(selectedItems.contains(item) ? .white : .black)
                                 Spacer()
                                 if selectedItems.contains(item) {
@@ -74,7 +73,7 @@ struct SelectRevuView: View {
         }
     }
 
-    private func toggleSelection(for item: String) {
+    private func toggleSelection(for item: PromptData) {
         if selectedItems.contains(item) {
             selectedItems.remove(item)
         } else {
@@ -82,9 +81,3 @@ struct SelectRevuView: View {
         }
     }
 }
-//
-//#Preview {
-//    SelectRevuView(options: [
-//        "햄버거", "피자", "초콜릿", "콜라", "아메리카노", "수박주스", "맥주", "치킨", "삼겹살", "김치찌개"
-//    ])
-//}

@@ -112,7 +112,7 @@ struct HomeStartWithoutPhotoButton: View {
         Button {
             coordinator.push(
                 Route.confirmData(
-                    StoreModel(storeName: "", category: "", productNames: []),
+                    StoreModel(storeName: "", date: "", category: "", storeTotalPrice: 0, productNames: []),
                     ConfirmMode.fromEmpty
                 )
             )

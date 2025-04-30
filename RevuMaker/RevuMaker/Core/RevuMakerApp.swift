@@ -24,8 +24,8 @@ struct RevuMakerApp: App {
                         case .confirmData(let storeData, let mode):
                             ConfirmDataView(storeData: storeData, mode: mode)
                                 .environmentObject(coordinator)
-                        case .selectRevu(let options):
-                            SelectRevuView(options: options)
+                        case .selectRevu:
+                            SelectRevuView()
                                 .environmentObject(coordinator)
                         case .selectConcept:
                             SelectConceptView()
