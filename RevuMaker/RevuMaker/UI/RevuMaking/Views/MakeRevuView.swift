@@ -11,7 +11,7 @@ struct MakeRevuView: View {
     @EnvironmentObject var coordinator: NavigationCoordinator
     
     @State private var isTextGenerated: Bool = false
-    @State private var generatedRevuText: String = "여기에 생성된 리뷰 텍스트가 들어갑니다. SwiftUI로 간단하게 만들 수 있어요! 여기에 생성된 리뷰 텍스트가 들어갑니다. SwiftUI로 간단하게 만들 수 있어요!"
+    @State private var generatedRevuText: String = ""
 
     var body: some View {
         VStack {
