@@ -11,7 +11,7 @@ struct MakeRevuView: View {
     @EnvironmentObject var coordinator: NavigationCoordinator
     
     @State private var isTextGenerated: Bool = false
-    @State private var generatedRevuText: String = ""
+    @State private var generatedRevuText: String = ReviewTone.blog.example
 
     var body: some View {
         VStack {
@@ -37,14 +37,15 @@ struct MakeRevuView: View {
                     }
                 )
             }
-            
-            Button(action: {
-                isTextGenerated.toggle()
-            }) {
-                Text(isTextGenerated ? "다시 생성하기" : "완료 상태로 변경")
+        }
+        .onAppear {
+            if !isTextGenerated {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                    withAnimation {
+                        isTextGenerated.toggle()
+                    }
+                }
             }
-            .buttonStyle(OrangeRoundedButtonStyle(width: 180, height: 40, backgroundColor: .green))
-            .padding(8)
         }
         .navigationBarBackButtonHidden(true)
     }
