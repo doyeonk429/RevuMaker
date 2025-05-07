@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ConfirmDataView: View {
+    @EnvironmentObject var reviewFlow: ReviewFlowViewModel
     @EnvironmentObject private var coordinator: NavigationCoordinator
     let storeData: StoreModel
     let mode: ConfirmMode
@@ -69,10 +70,12 @@ struct ConfirmDataView: View {
             }
         }
         .onAppear {
-            storeName = storeData.storeName
-            category = storeData.category
-            date = storeData.date
-            productNames = storeData.productNames
+            if let model = reviewFlow.storeModel {
+                storeName = model.storeName
+                category = model.category
+                date = model.date
+                productNames = model.productNames
+            }
         }
     }
     
@@ -122,7 +125,7 @@ struct ConfirmDataView: View {
     private var rightButtonAction: () -> Void {
         {
             let totalPrice = productNames.reduce(0) { $0 + $1.totalPrice }
-            let updatedStoreData = StoreModel(
+            reviewFlow.storeModel = StoreModel(
                 storeName: storeName,
                 date: date,
                 category: category,

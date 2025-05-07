@@ -10,29 +10,42 @@ import SwiftUI
 @main
 struct RevuMakerApp: App {
     @StateObject private var coordinator = NavigationCoordinator()
+    
+    let container: DIContainer
+
+    init() {
+        let coordinator = NavigationCoordinator()
+        self._coordinator = StateObject(wrappedValue: coordinator)
+        self.container = DIContainer(
+            appState: AppStateStore(),
+            repositories: .init(
+                reviewWebRepository: AlanRepository(session: .shared)
+            ),
+            coordinator: coordinator
+        )
+    }
 
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
                 HomeView()
-                    .environmentObject(coordinator)
+                    .inject(container)
                     .navigationDestination(for: Route.self) { route in
                         switch route {
                         case .scanImage(let image):
-                            ScanImageView(image: image)
-                                .environmentObject(coordinator)
+                            ScanImageView(image: image).inject(container)
                         case .confirmData(let storeData, let mode):
                             ConfirmDataView(storeData: storeData, mode: mode)
-                                .environmentObject(coordinator)
+                                .inject(container)
                         case .selectRevu:
                             SelectRevuView()
-                                .environmentObject(coordinator)
+                                .inject(container)
                         case .selectConcept:
                             SelectConceptView()
-                                .environmentObject(coordinator)
+                                .inject(container)
                         case .makeRevu(_):
                             MakeRevuView()
-                                .environmentObject(coordinator)
+                                .inject(container)
                         }
                     }
             }

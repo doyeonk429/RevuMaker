@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct SelectRevuView: View {
+    @EnvironmentObject var reviewFlow: ReviewFlowViewModel
     @EnvironmentObject private var coordinator: NavigationCoordinator
     @State private var selectedItems: Set<PromptData> = []
     
     private let buttonTitle : String = "다음"
     private var buttonAction: () -> Void {
         {
+            reviewFlow.selectedPrompts = Array(selectedItems)
             coordinator.push(Route.selectConcept)
         }
     }
@@ -70,6 +72,9 @@ struct SelectRevuView: View {
                     coordinator.pop()
                 })
             }
+        }
+        .onAppear {
+            selectedItems = Set(reviewFlow.selectedPrompts)
         }
     }
 

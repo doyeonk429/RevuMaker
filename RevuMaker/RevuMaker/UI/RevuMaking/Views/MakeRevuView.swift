@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct MakeRevuView: View {
+    @EnvironmentObject var reviewFlow: ReviewFlowViewModel
     @EnvironmentObject var coordinator: NavigationCoordinator
     
     @State private var isTextGenerated: Bool = false
-    @State private var generatedRevuText: String = ReviewTone.blog.example
 
     var body: some View {
         VStack {
@@ -24,9 +24,9 @@ struct MakeRevuView: View {
                     .frame(width: 300, height: 300)
             } else {
                 BottomActionAreaView(
-                    descriptionText: generatedRevuText,
+                    descriptionText: reviewFlow.generatedReview ?? "리뷰 생성에 실패했습니다.",
                     singleButtonAction: {
-                        copyToClipboard(text: generatedRevuText)
+                        copyToClipboard(text: reviewFlow.generatedReview ?? "리뷰 생성에 실패했습니다.")
                     },
                     firstHStackButtonAction: {
                         isTextGenerated.toggle()
@@ -39,12 +39,8 @@ struct MakeRevuView: View {
             }
         }
         .onAppear {
-            if !isTextGenerated {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                    withAnimation {
-                        isTextGenerated.toggle()
-                    }
-                }
+            Task {
+                try? await generateReview()
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -52,6 +48,17 @@ struct MakeRevuView: View {
     
     private func copyToClipboard(text: String) {
         UIPasteboard.general.string = text
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    }
+    
+    private func generateReview() async {
+        // 텍스트 생성 로직을 호출하고
+        await MainActor.run {
+            reviewFlow.generatedReview = "🎉 생성된 리뷰입니다!" // 또는 실제 결과
+            withAnimation {
+                isTextGenerated = true
+            }
+        }
     }
     
 }

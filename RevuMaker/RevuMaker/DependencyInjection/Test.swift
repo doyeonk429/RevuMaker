@@ -32,3 +32,8 @@ enum Route: Hashable {
     case selectConcept
     case makeRevu(ReviewTone)
 }
+
+final class AppStateStore: ObservableObject {
+    @Published var recentGeneratedReviews: [String] = []
+    // 필요 시 사용자 설정, 진행 상태 등 추가 가능
+}

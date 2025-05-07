@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SelectConceptView: View {
+    @EnvironmentObject var reviewFlow: ReviewFlowViewModel
     @EnvironmentObject private var coordinator: NavigationCoordinator
     
     @State private var selectedItem: ReviewTone?
@@ -17,6 +18,7 @@ struct SelectConceptView: View {
     private var buttonAction: () -> Void {
         {
             if let item = selectedItem {
+                reviewFlow.selectedTone = item
                 coordinator.push(Route.makeRevu(item))
             }
         }
@@ -44,7 +46,9 @@ struct SelectConceptView: View {
                             },
                             infoAction: {
                                 currentItem = item
-                                showingInfoSheet = true
+                                DispatchQueue.main.async {
+                                    showingInfoSheet = true
+                                }
                             })
                         .listRowSeparator(.hidden, edges: .all)
                         .listRowBackground(Color.clear)
@@ -68,6 +72,9 @@ struct SelectConceptView: View {
                     coordinator.pop()
                 })
             }
+        }
+        .onAppear {
+            selectedItem = reviewFlow.selectedTone
         }
         .sheet(isPresented: $showingInfoSheet) {
             VStack(spacing: 12) {
