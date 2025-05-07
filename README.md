@@ -16,6 +16,8 @@ AI를 활용하여 영수증 사진으로 자동 리뷰를 생성하는 iOS 앱�
 - MVVM 구조: ReviewFlowViewModel을 통한 상태 관리
 - SwiftData : 최근 생성한 리뷰 저장 및 조회
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/doyeonk429/RevuMaker?utm_source=oss&utm_medium=github&utm_campaign=doyeonk429%2FRevuMaker&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 ## 🧱 아키텍처 구조도
 ```mermaid
 graph TD
