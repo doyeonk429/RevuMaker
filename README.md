@@ -130,8 +130,8 @@ sequenceDiagram
   <tr>
     <td align="center"><img src="https://github.com/user-attachments/assets/4ac5b3f1-1ada-4411-8e98-d92157820543" width="200"/><br/>홈</td>
     <td align="center"><img src="https://github.com/user-attachments/assets/f3abc9ac-cb99-4f7c-b42e-2e8cfd8abaab" width="200"/><br/>갤러리에서 영수증 선택</td>
-    <td align="center"><img src="https://github.com/user-attachments/assets/bcebff38-9727-4d7b-a165-4a7b0084d799" width="200"/><br/>이미지 스캔</td>
-    <td align="center"><img src="https://github.com/user-attachments/assets/1a23e497-9cd9-4a9e-a9a7-d2d9942aeb1a" width="200"/><br/>가게 정보 수정</td>
+    <td align="center"><img src="https://github.com/user-attachments/assets/bcebff38-9727-4d7b-a165-4a7b0084d799" width="200"/><br/>영수증 이미지 스캔</td>
+    <td align="center"><img src="https://github.com/user-attachments/assets/1a23e497-9cd9-4a9e-a9a7-d2d9942aeb1a" width="200"/><br/>스캔 정보 확인</td>
   </tr>
   <tr>
     <th colspan="4" align="center">2️⃣ 가게 정보 입력</th>
